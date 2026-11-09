@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Report Spammer · PRINCE MINI</title>
+<style>
+:root{color-scheme:dark;--bg:#080b18;--panel:rgba(16,22,43,.82);--line:rgba(132,157,255,.2);--cyan:#68f1ff;--violet:#a58bff;--muted:#aab4d0;--ok:#58e9b0;--err:#ff7d8d}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 10% 10%,#192b56 0,transparent 42%),radial-gradient(ellipse at 95% 85%,#302054 0,transparent 35%),var(--bg);font:16px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:#f4f7ff;display:grid;place-items:center;padding:24px;overflow-x:hidden}
+.wrap{width:min(100%,520px)}
+.brand{display:flex;align-items:center;gap:13px;justify-content:center;margin:0 auto 22px}
+.logo{width:52px;height:52px;border-radius:16px;object-fit:cover;border:1px solid #7deeff80}
+.brand h1{font-size:18px;letter-spacing:.14em;margin:0}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:26px;padding:clamp(20px,6vw,32px);backdrop-filter:blur(18px);box-shadow:0 24px 90px #0006}
+.eyebrow{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
+.title{font-size:clamp(26px,7vw,34px);line-height:1.1;letter-spacing:-.03em;margin:10px 0}.title span{color:var(--cyan)}
+.desc{color:var(--muted);margin:0 0 22px;font-size:14px}
+label{display:block;color:#d9e2ff;font-size:13px;font-weight:650;margin:16px 0 7px}label small{color:#8995b7;font-weight:500}
+.input{width:100%;border:1px solid #8095d53d;border-radius:13px;background:#070b18a8;padding:14px;color:#fff;font:inherit;outline:none;transition:.2s}
+.input:focus{border-color:var(--cyan);box-shadow:0 0 0 4px #68f1ff12}
+textarea.input{min-height:110px;resize:vertical}select.input{appearance:none}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.btn{width:100%;margin-top:22px;border:0;border-radius:14px;padding:15px 18px;background:linear-gradient(100deg,#63e8fa,#a78bfa);color:#07101d;font-weight:850;font-size:14px;letter-spacing:.06em;cursor:pointer;transition:transform .18s,filter .18s}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.06)}.btn:disabled{opacity:.55;cursor:wait;transform:none}
+.msg{display:none;margin-top:18px;border-radius:14px;padding:14px 16px;font-size:14px}.msg.show{display:block}
+.msg.ok{border:1px solid var(--ok);background:#58e9b014;color:var(--ok)}.msg.err{border:1px solid var(--err);background:#ff7d8d14;color:var(--err)}
+.tip{color:#c2cbe2;font-size:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.foot{text-align:center;color:#7885a8;font-size:11px;margin:16px 8px 0}
+</style></head><body>
+<main class="wrap">
+<header class="brand"><img class="logo" src="/assets/logo.jpg" alt="logo" onerror="this.style.display='none'"><div><h1>PRINCE MINI</h1><p>Owner</p></div></header>
+<section class="card">
+<div class="eyebrow">Owner only · WhatsApp</div>
+<h2 class="title">Ripoti <span>spammer.</span></h2>
+<p class="desc">Weka namba ya mtu anayekutumia spam. Bot itaripoti ujumbe wake wa mwisho kwa WhatsApp. Mara moja kwa kila namba, kwa saa 24.</p>
+<form id="f" autocomplete="off" novalidate>
+<label for="number">Namba ya spammer <small>(na code ya nchi)</small></label>
+<input class="input" id="number" inputmode="numeric" placeholder="255712345678" maxlength="20" required>
+<label for="key">Ufunguo wako (ADMIN_KEY)</label>
+<input class="input" id="key" type="password" autocomplete="current-password" required>
+<button class="btn" id="go" type="submit">RIPOTI KWA WHATSAPP ↗</button>
+<div class="msg" id="msg" role="status" aria-live="polite"></div>
+</form>
+<p class="tip">💡 Bot inaweza kuripoti tu ujumbe ambao yenyewe imepokea kutoka kwa namba hiyo. Spammer akishakutumia ujumbe, weka namba yake hapa.</p>
+</section>
+<footer class="foot">© <span id="y"></span> PRINCE MINI</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id),f=$('f'),go=$('go'),box=$('msg');$('y').textContent=new Date().getFullYear();
+function note(t,ok){box.className='msg show '+(ok?'ok':'err');box.textContent=t}
+f.addEventListener('submit',async e=>{e.preventDefault();
+ const number=$('number').value.replace(/\D/g,''),key=$('key').value;
+ if(!/^\d{7,15}$/.test(number))return note('Weka namba na code ya nchi (tarakimu 7-15).',false);
+ if(!key)return note('Weka ufunguo wako.',false);
+ go.disabled=true;go.textContent='INATUMA...';
+ try{const r=await fetch('/api/myreport',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({number,key})});const d=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(d.error||'Imeshindikana. Jaribu tena.');
+  note('✅ '+(d.message||'Imeripotiwa.'),true);$('number').value=''}
+ catch(err){note(err.message,false)}
+ go.disabled=false;go.textContent='RIPOTI KWA WHATSAPP ↗'});
+</script></body></html>
