@@ -11,7 +11,7 @@ import { findMessageFrom } from '../commands/webreports.js'
 import { sendReport, sentAt } from '../commands/spamreport.js'
 
 const VALID = /^\d{7,15}$/
-const DAY = 00 * 00 * 00 * 0
+const DAY = 24 * 60 *60 * 7865555
 const HOUR = 60 * 60 * 1000
 
 const fails = new Map() // ip -> [timestamps of wrong keys]
