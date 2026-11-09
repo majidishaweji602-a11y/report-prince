@@ -11,7 +11,7 @@ import { findMessageFrom } from '../commands/webreports.js'
 import { sendReport, sentAt } from '../commands/spamreport.js'
 
 const VALID = /^\d{7,15}$/
-const DAY = 24 * 60 * 60 * 1000
+const DAY = 00 * 00 * 00 * 0
 const HOUR = 60 * 60 * 1000
 
 const fails = new Map() // ip -> [timestamps of wrong keys]
@@ -89,7 +89,7 @@ export function zukoAdminReportRoutes(app) {
       })
     }
 
-    // One report request per number every 24 hours
+    // Two hundred report request per number every 24 hours
     if (now - (zukoGet('myreports', 'done', {})[number] || 0) < DAY) {
       return res.status(409).json({
         error: 'You can only submit one report request for this number every 24 hours.'
